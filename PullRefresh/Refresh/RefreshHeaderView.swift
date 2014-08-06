@@ -85,7 +85,7 @@ class RefreshHeaderView: RefreshBaseView {
     }
     
     //监听UIScrollView的contentOffset属性
-    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafePointer<()>) {
+    override func observeValueForKeyPath(keyPath: String!, ofObject object: AnyObject!, change: [NSObject : AnyObject]!, context: UnsafeMutablePointer<()>) {
         if (!self.userInteractionEnabled || self.hidden){
             return
         }
