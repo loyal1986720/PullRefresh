@@ -5,11 +5,11 @@
 //  Created by SunSet on 14-6-24.
 //  Copyright (c) 2014 zhaokaiyuan. All rights reserved.
 //
-
+//RefreshViewHeight
 import UIKit
 class RefreshHeaderView: RefreshBaseView {
     class func footer()->RefreshHeaderView{
-        var footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRectMake(0, 0,   UIScreen.mainScreen().bounds.width, RefreshViewHeight))
+        var footer:RefreshHeaderView  = RefreshHeaderView(frame: CGRectMake(0, 0,   UIScreen.mainScreen().bounds.width, 64.0))
         return footer
     }
     
@@ -18,17 +18,21 @@ class RefreshHeaderView: RefreshBaseView {
     willSet{
         
     }
+
     didSet{
         NSUserDefaults.standardUserDefaults().setObject(lastUpdateTime, forKey: RefreshHeaderTimeKey)
         NSUserDefaults.standardUserDefaults().synchronize()
         self.updateTimeLabel()
     }
+        
     }
-    
+    required init(coder: NSCoder) {
+        fatalError("NSCoding not supported")
+    }
     // 最后的更新时间lable
     var lastUpdateTimeLabel:UILabel!
     
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         lastUpdateTimeLabel = UILabel()
         lastUpdateTimeLabel.autoresizingMask = UIViewAutoresizing.FlexibleWidth
@@ -37,8 +41,7 @@ class RefreshHeaderView: RefreshBaseView {
         lastUpdateTimeLabel.backgroundColor = UIColor.clearColor()
         lastUpdateTimeLabel.textAlignment = NSTextAlignment.Center
         self.addSubview(lastUpdateTimeLabel);
-        
-        if  !NSUserDefaults.standardUserDefaults().objectForKey(RefreshHeaderTimeKey)  {
+        if  !NSUserDefaults.standardUserDefaults().objectForKey(RefreshHeaderTimeKey) {
             self.lastUpdateTime = NSDate()
         } else {
             self.lastUpdateTime = NSUserDefaults.standardUserDefaults().objectForKey(RefreshHeaderTimeKey) as NSDate
@@ -93,12 +96,9 @@ class RefreshHeaderView: RefreshBaseView {
             return
         }
         if RefreshContentOffset.isEqualToString(keyPath){
-            self.adjustStateWithContentOffset()
+        self.adjustStateWithContentOffset()
         }
-    
     }
-    
-   
     
     //调整状态
     func adjustStateWithContentOffset()
@@ -157,7 +157,6 @@ class RefreshHeaderView: RefreshBaseView {
             break
         case .Refreshing:
             self.statusLabel.text =  RefreshHeaderRefreshing;
-            
             UIView.animateWithDuration(RefreshSlowAnimationDuration, animations: {
                 var top:CGFloat = self.scrollViewOriginalInset.top + self.frame.size.height
                 var inset:UIEdgeInsets = self.scrollView.contentInset
