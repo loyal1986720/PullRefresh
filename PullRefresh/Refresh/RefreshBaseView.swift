@@ -49,7 +49,9 @@ class RefreshBaseView: UIView {
     }
     
     }
-    
+    required init(coder: NSCoder) {
+        fatalError("NSCoding not supported")
+    }
     func setState(newValue:RefreshState){
         
         
